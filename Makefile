@@ -50,11 +50,12 @@ clean-all:
 	rm -rf docs/openmaptiles/fonts/Open\ Sans\ Italic
 	rm -rf docs/openmaptiles/fonts/Open\ Sans\ Regular
 
+
 # Pull `yuiseki/vector-tile-builder` docker image if not exists
 .PHONY: docker-pull
 docker-pull:
 	docker image inspect yuiseki/vector-tile-builder:latest > /dev/null || docker pull yuiseki/vector-tile-builder:latest
-	docker image inspect protomaps/go-pmtiles:latest > /dev/null || docker pull protomaps/go-pmtiles:latest
+	docker image inspect yuiseki/go-pmtiles:latest > /dev/null || docker pull yuiseki/go-pmtiles:latest
 
 .PHONY: docker-pull-all
 docker-pull-all:
@@ -63,14 +64,16 @@ docker-pull-all:
 # Build `yuiseki/vector-tile-builder` docker image if not exists
 .PHONY: docker-build
 docker-build:
-	docker image inspect yuiseki/go-pmtiles:latest > /dev/null || docker build -t yuiseki/go-pmtiles:latest github.com/protomaps/go-pmtiles#main
 	docker image inspect yuiseki/vector-tile-builder:latest > /dev/null || docker build . -t yuiseki/vector-tile-builder:latest
+	docker image inspect yuiseki/go-pmtiles:latest > /dev/null || docker build -t yuiseki/go-pmtiles:latest github.com/protomaps/go-pmtiles#main
 
 # Push `yuiseki/vector-tile-builder` docker image to docker hub
 # MEMO: require `docker login`
 .PHONY: docker-push
 docker-push:
 	docker push yuiseki/vector-tile-builder:latest
+	docker push yuiseki/go-pmtiles:latest
+
 
 # Download OpenStreetMap data as Protocolbuffer Binary format file
 $(region_pbf):
@@ -139,7 +142,7 @@ $(pmtiles):
 		-i \
 		--rm \
 		--mount type=bind,source=$(CURDIR)/tmp,target=/tmp \
-		protomaps/go-pmtiles \
+		yuiseki/go-pmtiles \
 			convert /$(mbtiles) /$(pmtiles)
 
 # Generate TileJSON format file from MBTiles format file
