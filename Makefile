@@ -54,6 +54,7 @@ clean-all:
 .PHONY: docker-pull
 docker-pull:
 	docker image inspect yuiseki/vector-tile-builder:latest > /dev/null || docker pull yuiseki/vector-tile-builder:latest
+	docker image inspect protomaps/go-pmtiles:latest > /dev/null || docker pull protomaps/go-pmtiles:latest
 
 .PHONY: docker-pull-all
 docker-pull-all:
