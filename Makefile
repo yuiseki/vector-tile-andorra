@@ -21,6 +21,7 @@ targets = \
 	$(admin_poly) \
 	$(admin_pbf) \
 	$(mbtiles) \
+	$(pmtiles) \
 	$(tilejson) \
 	$(zxy_metadata) \
 	$(stylejson)
